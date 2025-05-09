@@ -1,7 +1,12 @@
 library(qdap)
 library(wordcloud)
 library(ggplot2)
-
+library(tm)
+library(tidyverse)
+library(tidytext)
+library(ggthemes)
+library(plotly)
+library(openxlsx)
 #dane <- read.csv("Alaska_oceny.csv") # Przerobione dane z bazy danych w formacie csv
 #dane$text[dane$text == " null"] <- NA # Usuwanie null
 
@@ -45,6 +50,16 @@ wykres_czestosci <- function(czestosc_slow){
           axis.line = element_line(color = "black")) # Dostosowanie linii osi
   
 }
+
+wykres_czestosci_interaktywny <- function(czestosc_slow){
+  p <- ggplot(czestosc_slow, aes(x = FREQ, y = reorder(WORD, FREQ))) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    labs(x = "Częstość", y = "Słowo") +
+    theme_minimal()
+  ggplotly(p)
+}
+
+
 # Tworzenie chmur słów
 # Typ: zajrzyj do ?brewer -> rodzaj palety kolorów w chmurze słów - w programie używany Dark2 i Paired
 chmura_slow <- function(czestosc_ocen,typ){
@@ -53,9 +68,21 @@ chmura_slow <- function(czestosc_ocen,typ){
   title(tytul)
 }
 
+# Zapisywanie wyników częstości do pliku csv
+zapis_csv <- function(){
+  for (ocena in 1:5) {
+    czestosc <- czestosc_ocena(dane_ocena(dane,ocena))#UWAGA - w wykonywaniu programu nie zmieniać nazwy zmiennej "dane"
+    nazwa_pliku <- paste("czestosc_ocena_", ocena, ".csv")
+    write.csv(czestosc, file = nazwa_pliku, row.names = FALSE)
+  }
+}
+
+
 
 # WYKONYWANIE PROGRAMU
 dane <- wczytaj_dane("Alaska_oceny.csv")
 czestosc_ocena_1 <- czestosc_ocena(dane_ocena(dane,1))
+
+
 chmura_slow(czestosc_ocena_1,"Dark2")
 wykres_czestosci(czestosc_ocena_1)
