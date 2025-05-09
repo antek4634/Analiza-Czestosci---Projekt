@@ -36,9 +36,9 @@ czestosc_ocena <- function(dane){
 
 
 # Tworzenie wykresów słupkowych z częstością słów
-wykres_czestosci <- function(czestosc_slow){
-  tytul <- deparse(substitute(czestosc_slow))  
-  ggplot(czestosc_slow, aes(x = FREQ, y = reorder(WORD, FREQ))) +
+wykres_czestosci <- function(czestosc_slow,ocena){
+  tytul <- paste("Częstość słów – ocena", ocena)
+  p <- ggplot(czestosc_slow, aes(x = FREQ, y = reorder(WORD, FREQ))) +
     geom_bar(stat = "identity", fill = "skyblue", color = "darkblue", alpha = 0.8) +
     labs(x = "Częstość", y = "Słowo") +
     ggtitle(tytul) +
@@ -48,7 +48,7 @@ wykres_czestosci <- function(czestosc_slow){
           panel.grid.major.y = element_blank(), # Usunięcie głównych linii siatki poziomej
           panel.grid.minor.y = element_blank(), # Usunięcie mniejszych linii siatki poziomej
           axis.line = element_line(color = "black")) # Dostosowanie linii osi
-  
+  print(p)
 }
 
 wykres_czestosci_interaktywny <- function(czestosc_slow){
@@ -62,8 +62,8 @@ wykres_czestosci_interaktywny <- function(czestosc_slow){
 
 # Tworzenie chmur słów
 # Typ: zajrzyj do ?brewer -> rodzaj palety kolorów w chmurze słów - w programie używany Dark2 i Paired
-chmura_slow <- function(czestosc_ocen,typ){
-  tytul <- deparse(substitute(czestosc_slow))
+chmura_slow <- function(czestosc_ocen,typ,ocena){
+  tytul <- paste("Częstość słów – ocena", ocena)
   wordcloud(czestosc_ocen$WORD, czestosc_ocen$FREQ, colors = brewer.pal(8,typ))
   title(tytul)
 }
@@ -81,8 +81,10 @@ zapis_csv <- function(){
 
 # WYKONYWANIE PROGRAMU
 dane <- wczytaj_dane("Alaska_oceny.csv")
-czestosc_ocena_1 <- czestosc_ocena(dane_ocena(dane,1))
 
-
-chmura_slow(czestosc_ocena_1,"Dark2")
-wykres_czestosci(czestosc_ocena_1)
+for (ocena in 1:5){
+  czestosc <- czestosc_ocena(dane_ocena(dane,ocena))
+  assign(paste0("czestosc_", ocena), czestosc)
+  chmura_slow(czestosc,"Dark2",ocena)
+  wykres_czestosci(czestosc,ocena)
+  }
