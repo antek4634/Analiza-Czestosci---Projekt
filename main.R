@@ -88,3 +88,4 @@ for (ocena in 1:5){
   chmura_slow(czestosc,"Dark2",ocena)
   wykres_czestosci(czestosc,ocena)
   }
+zapis_csv()
