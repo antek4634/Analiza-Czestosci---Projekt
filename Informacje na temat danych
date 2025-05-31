@@ -1,0 +1,14 @@
+Dane pobrane z ogólnodostępnej bazy danych(link poniżej). Dane wrzucone na githuba są oczywiście zmodyfikowane i skrócone do około 1500 recenzji.
+bibliografia:
+
+link: https://mcauleylab.ucsd.edu/public_datasets/gdrive/googlelocal/#complete-data
+
+UCTopic: Unsupervised Contrastive Learning for Phrase Representations and Topic Mining
+Jiacheng Li, Jingbo Shang, Julian McAuley
+Annual Meeting of the Association for Computational Linguistics (ACL), 2022
+pdf
+
+
+Personalized Showcases: Generating Multi-Modal Explanations for Recommendations
+An Yan, Zhankui He, Jiacheng Li, Tianyang Zhang, Julian Mcauley
+The 46th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR), 2023
